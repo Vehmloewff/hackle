@@ -147,6 +147,13 @@ export function makeHackle(options: MakeHackleOptions = {}) {
 		loggers.forEach(logger => logger(prettyMessage, scope.level))
 	}
 
+	/** Logs a message to the 'error' level and exits */
+	function critical(...message: any[]): never {
+		error(...message)
+		if (Deno) return Deno.exit()
+		else throw new Error(`A critical error was encountered`)
+	}
+
 	/** Logs message to the 'error' level */
 	function error(...message: any[]) {
 		scope('default-error')(...message)
@@ -327,6 +334,7 @@ export function makeHackle(options: MakeHackleOptions = {}) {
 	}
 
 	return {
+		critical,
 		error,
 		warn,
 		notice,
