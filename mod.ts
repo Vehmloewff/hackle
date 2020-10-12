@@ -217,6 +217,34 @@ export function makeHackle(options: MakeHackleOptions = {}) {
 	}
 
 	/**
+	 * Just a wrapper around `hackle.setLogLevel` except it validates the level first.
+	 * NOTE: The string `none` counts as `hackle.setLogLevel(null)`.  Non-string values are ignored.
+	 *
+	 * The intended usage for this function is to make it easier to set the log level straight from a CLI option.
+	 *
+	 * Here is an example using `cmd`:
+	 * ```ts
+	 * const program = new Command()
+	 * program.option('--log-level <level>')
+	 * program.parse(Deno.args)
+	 *
+	 * hackle.setRawLogLevel(program.logLevel)
+	 * ```
+	 */
+	function setRawLogLevel(level: any) {
+		if (level === 'none') setLogLevel(null)
+		else if (level === 'error') setLogLevel('error')
+		else if (level === 'warn') setLogLevel('warn')
+		else if (level === 'notice') setLogLevel('notice')
+		else if (level === 'info') setLogLevel('info')
+		else if (level === 'debug') setLogLevel('debug')
+		else if (typeof level === 'string')
+			error(
+				`An invalid log level was received.  '${level}' is not one of the valid log levels: 'none', 'error', 'warn', 'notice', 'info', and 'debug'.`
+			)
+	}
+
+	/**
 	 * Adds a custom scope that can be later accessed with the `hackle.scope` function.
 	 *
 	 * ```ts
@@ -306,6 +334,7 @@ export function makeHackle(options: MakeHackleOptions = {}) {
 		debug,
 		logStack,
 		setLogLevel,
+		setRawLogLevel,
 		addScope,
 		scope,
 		currentScopes,
