@@ -1,5 +1,5 @@
 import '../init.ts'
-import { green, red } from 'https://deno.land/std@0.71.0/fmt/colors.ts'
+import { green, red } from 'https://deno.land/std@0.85.0/fmt/colors.ts'
 import { tools } from '../mod.ts'
 
 // Just some quick logs to make sure things are working

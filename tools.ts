@@ -1,8 +1,8 @@
 import type { Logger, Scope } from './mod.ts'
-import { red, bold, yellow, blue, green, gray, rgb24, stripColor } from 'https://deno.land/std@0.71.0/fmt/colors.ts'
-import { join } from 'https://deno.land/std@0.71.0/path/mod.ts'
+import { red, bold, yellow, blue, green, gray, rgb24, stripColor } from 'https://deno.land/std@0.85.0/fmt/colors.ts'
+import { join } from 'https://deno.land/std@0.85.0/path/mod.ts'
 import { getDateFormat } from './lib/get-date-format.ts'
-import { existsSync } from 'https://deno.land/std@0.71.0/fs/exists.ts'
+import { existsSync } from 'https://deno.land/std@0.85.0/fs/exists.ts'
 
 export const consoleLogger: Logger = (message, level) => {
 	const encoder = new TextEncoder()
@@ -40,11 +40,13 @@ export const makeFileLogger = (folder: string = '.log', options: MakeFileLoggerO
 export const defaultStringify = (message: any[]): string => {
 	return (
 		message
-			.map(message =>
-				Deno.inspect(message, {
-					depth: 100,
-				})
-			)
+			.map(message => {
+				if (typeof message === 'string') return message
+				else
+					return Deno.inspect(message, {
+						depth: 100,
+					})
+			})
 			.join(' ') + '\n'
 	)
 }
