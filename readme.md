@@ -1,5 +1,7 @@
 # Hackle
 
+**Deprecated** Use [`jsr:@std/log`](https://jsr.io/@std/log) instead.
+
 A hackable logger for the 21 Century
 
 ## Basic Usage
